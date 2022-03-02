@@ -2,34 +2,28 @@ package bitcounting
 
 import "testing"
 
+type addTest struct {
+	arg1, expected int
+}
+
+var addTests = []addTest{
+	{0, 0},
+	{4, 1},
+	{7, 3},
+	{9, 2},
+	{10, 2},
+}
+
 func TestBitCounting(t *testing.T) {
-	v := CountBits(0)
-	if v != 0 {
-		t.Error("Expect 0, got ", v)
+	for _, test := range addTests {
+		if output := CountBits(uint(test.arg1)); output != test.expected {
+			t.Errorf("Input was %v, output %v not equal to expected %v", test.arg1, output, test.expected)
+		}
 	}
+}
 
-	v = CountBits(4)
-	if v != 1 {
-		t.Error("Expect 1. got ", v)
-	}
-
-	v = CountBits(0)
-	if v != 0 {
-		t.Error("Expect 0, got ", v)
-	}
-
-	v = CountBits(7)
-	if v != 3 {
-		t.Error("Expect 3, got ", v)
-	}
-
-	v = CountBits(9)
-	if v != 2 {
-		t.Error("Expect 2, got ", v)
-	}
-
-	v = CountBits(10)
-	if v != 2 {
-		t.Error("Expect 2, got ", v)
+func BenchmarkBitCounting(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		CountBits(10)
 	}
 }
